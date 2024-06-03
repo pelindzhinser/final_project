@@ -221,3 +221,111 @@ best_params = grid_search.best_params_
 print(best_params)
 ```
 
+###   Web service
+This command updates the list of available packages from the software repositories: 
+
+```
+sudo apt-get update 
+```
+
+This command installs the Python package manager, pip, on your system. Pip is used to install, upgrade, and manage Python packages: 
+```
+sudo apt install python3-pip
+```
+Both of these commands require sudo privileges, which means that you must be logged in as a user with administrator privileges to run them.
+
+**Installing Python Virtual Environment**
+
+1. Install Virtualenv package using pip
+2. Create a virtual environment for project:
+
+```
+pip install virtualenv
+virtualenv venv
+```
+**Activating Virtual Environment**
+
+1. Activate the virtual environment:
+
+```
+source venv/bin/activate
+```
+2. Verify that the virtual environment is active by checking the command prompt:
+
+
+```
+(venv) $
+```
+
+**Installing Flask**
+
+```
+pip install Flask
+```
+
+**Running Flask App**
+
+```
+from flask import Flask, request 
+import joblib
+import numpy
+
+MODEL_PATH = 'mlmodels/model.pkl'
+SCALER_X_PATH = 'mlmodels/scaler_x.pkl'
+SCALER_Y_PATH = 'mlmodels/scaler_y.pkl'
+
+app = Flask(__name__)
+model = joblib.load(MODEL_PATH)
+sc_x = joblib.load(SCALER_X_PATH)
+sc_y = joblib.load(SCALER_Y_PATH)
+
+@app.route('/predict_price', methods = ['GET'])
+def predict(): 
+    args = request.args
+    open_plan = args.get('open_plan', default = -1, type = int)
+    rooms = args.get('rooms', default = -1, type = int)
+    area = args.get('area', default = -1, type = int)
+    renovation = args.get('renovation', default = -1, type = int)
+    
+    x = numpy.array([open_plan, rooms, area, renovation]).reshape(1,-1)
+    x = sc_x.transform(x)
+    
+    result = model.predict(x)
+    result = sc_y.inverse_transform(result.reshape(1,-1))
+    
+    return str(result[0][0])
+
+if __name__ == '__main__': 
+    app.run(debug = True, port = 7778, host = '0.0.0.0')
+```
+
+To open this on a virtual machine, you need to enter this code: 
+
+``` 
+python app.py 
+```
+
+
+![alt text](<Снимок экрана 2024-06-03 в 21.20.04.png>)
+
+![alt text](<Снимок экрана 2024-06-03 в 21.21.41.png>)
+
+This Python code uses the Flask microframework to create a simple web application that can predict the price of a property based on four features:
+
+• Number of open plan rooms
+
+• Number of rooms
+
+• Area in square meters
+
+• Renovation status (0 for no renovation, 1 for renovated)
+
+The code loads a pre-trained machine learning model and two scalers (for the input features and the output target) from disk.
+
+The predict() function handles incoming GET requests and extracts the four feature values from the request arguments. It then reshapes the input data into a format that the model expects and applies the input scaler to normalize the data.
+
+The model is used to make a prediction, and the output is inverse-transformed using the output scaler to obtain the predicted price in the original units.
+
+The predicted price is returned as a string in the response.
+
+If the script is run directly (not imported as a module), it starts a Flask development server on port 7778 and listens on all network interfaces (0.0.0.0).

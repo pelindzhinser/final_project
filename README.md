@@ -328,4 +328,4 @@ The model is used to make a prediction, and the output is inverse-transformed us
 
 The predicted price is returned as a string in the response.
 
-If the script is run directly (not imported as a module), it starts a Flask development server on port 7778 and listens on all network interfaces (0.0.0.0).
+If the script is run directly (not imported as a module), it starts a Flask development server on port 7778 and listens on all network interfaces (0.0.0.0)

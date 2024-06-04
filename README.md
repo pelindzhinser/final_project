@@ -329,3 +329,57 @@ The model is used to make a prediction, and the output is inverse-transformed us
 The predicted price is returned as a string in the response.
 
 If the script is run directly (not imported as a module), it starts a Flask development server on port 7778 and listens on all network interfaces (0.0.0.0)
+
+### Dockerfile
+
+```
+FROM ubuntu:20.04
+MAINTAINER Pelin Dzhinser
+RUN apt-get update -y
+COPY . /opt/gsom_predictor
+WORKDIR /opt/gsom_predictor
+RUN apt install -y python3-pip
+RUN pip3 install -r requirements.txt
+CMD python3 app.py
+```
+
+1. FROM ubuntu:20.04:
+   - Uses the base image of Ubuntu 20.04. The base image provides the file system structure and base environment for your application.
+
+2. MAINTAINER Pelin Dzhinser:
+   - This instruction is deprecated in Docker 1.13. It was previously used to specify a supporting person or organization. It is recommended that you use the LABEL metadata instead.
+
+3.RUN apt-get update -y:
+   - Updates the local Ubuntu package index to ensure that the latest versions of packages are installed.
+
+4. COPY . /opt/gsom_predictor:
+   - Copies all files from the current host directory (where the Dockerfile resides) inside the image to the /opt/gsom_predictor directory. This allows you to include the necessary files for your application in the image.
+
+5. WORKDIR /opt/gsom_predictor:
+   - Sets the working directory inside the /opt/gsom_predictor container. All subsequent instructions will be executed in this directory.
+
+6. RUN apt install -y python3-pip:
+   - Installs the python3-pip (Python package manager) package inside the container.
+
+7. RUN pip3 install -r requirements.txt:
+   - Installs the Python packages listed in the requirements.txt file. 
+
+8. CMD python3 app.py:
+   - Specifies the command that will be executed by default when the app.py container is started.
+
+### How to open the port in remote VM
+
+```
+ssh <login>@<your_vm_address>
+```
+
+### How to run app using docker and which port it uses
+
+```
+docker run --network host -d pelindzhinser/gsom_e2e24:v.0.1
+sudo ufw allow 7778
+```
+
+Example of work: 
+
+![alt text](<Снимок экрана 2024-06-04 в 07.50.24.png>)

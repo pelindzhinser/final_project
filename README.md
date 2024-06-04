@@ -19,7 +19,8 @@ In the course of the work was carried out:
 
 The data initially contained 429187 rows and 17 columns. Below is the info() about our raw table: 
 
-![Initial raw data](info.png)
+![alt text](images/info.png)
+
 
 Column information:
 1. **offer_id**: Unique identifier of the real estate offer/offer.
@@ -58,12 +59,12 @@ The shape of this table is (156054, 17)
 
 Description of important numerical attributes: 
 
-![description](description1.png)
+![alt text](images/description1.png)
 
 For better analytics, 2 columns were added: **price_per_sq_m** and **house_price_sqm_median** 
 
 Outliers in the 'last price' column: 
-![outliers](outliers.png)
+![alt text](images/outliers.png)
 Conclusion: we need to logarithm this column
 
 To evaluate the **“last price”** column, let's introduce the **“visualize_property”** function, which is designed to visualize a single numeric attribute in a DataFrame . It creates plots to help understand the distribution and characteristics of the attribute.
@@ -95,38 +96,37 @@ def visualize_property(df, feature):
 Before we applied log transformation on the **“last price”** column this function showed these results:
 
 Skewness and kurtosis decreased, distribution became normal.
-![alt text](<функция .png>)
-![alt text](функция1.png)
+
+![alt text](<images/функция .png>)
+![alt text](images/функция1.png)
 
 The QQ has gotten better too
 
 Before:
-
-![alt text](<Снимок экрана 2024-06-03 в 14.32.08.png>)
+![alt text](<images/Снимок экрана 2024-06-03 в 14.32.08.png>)
 
 After:
 
-![alt text](<Снимок экрана 2024-06-03 в 14.31.46.png>)
+![alt text](<images/Снимок экрана 2024-06-03 в 14.31.46.png>)
+
 
 
 Before:
-
-![ ](<Снимок экрана 2024-06-03 в 14.35.50.png>)
+![alt text](<images/Снимок экрана 2024-06-03 в 14.35.50.png>)
 
 After: 
-
-![alt text](<Снимок экрана 2024-06-03 в 14.37.38.png>)
+![alt text](<images/Снимок экрана 2024-06-03 в 14.37.38.png>)
 
 **Missing values**
+![alt text](<images/Снимок экрана 2024-06-03 в 14.39.51.png>)
 
-![alt text](<Снимок экрана 2024-06-03 в 14.39.51.png>)
 
 **Deleting columns that have no meaning to us:**
 'offer_id', 'price_per_sq_m' , 'house_price_sqm_median','category_type', 'offer_type'
 
 Explore relations between 'last_price' and 'area'
+![alt text](<images/Снимок экрана 2024-06-03 в 14.46.46.png>)
 
-![alt text](<Снимок экрана 2024-06-03 в 14.46.46-1.png>)
 
 
 ## Machine learning model
@@ -144,7 +144,7 @@ from sklearn.model_selection import train_test_split
 
 Before creating the model, make sure all the data is prepared. The data looks like this:
 
-![alt text](<Снимок экрана 2024-06-03 в 14.58.40.png>)
+![alt text](<images/Снимок экрана 2024-06-03 в 14.58.40.png>)
 
 **Splitting data:** 
 
@@ -189,7 +189,7 @@ y_val = sc_y.transform(y_val.reshape(-1, 1))  # используйте transform
     MSE: 0.3659391242188636
     RMSE: 0.6049290241167666
 
-![alt text](<Снимок экрана 2024-06-03 в 15.44.12.png>)
+![alt text](<images/Снимок экрана 2024-06-03 в 15.44.12.png>)
 
 **Model training with CatBoost:** CatBoostRegressor model, which is a gradient bousting method. This model has also been trained on a training dataset to predict the cost of apartments.
 
@@ -197,7 +197,8 @@ y_val = sc_y.transform(y_val.reshape(-1, 1))  # используйте transform
     MSE: 0.36586152077406886
     MSE: 0.604864878112516
 
-![alt text](<Снимок экрана 2024-06-03 в 15.45.51.png>)
+![alt text](<images/Снимок экрана 2024-06-03 в 15.45.51.png>)
+
 
 Hyperparameter tuning with GridSearchCV: GridSearchCV to tune the hyperparameters of the RandomForestRegressor model. This means that different combinations of hyperparameter values were tried and the performance of the model on each set of values was evaluated. The best hyperparameters were then used for the final model.
 
@@ -305,10 +306,9 @@ To open this on a virtual machine, you need to enter this code:
 python app.py 
 ```
 
+![alt text](<images/Снимок экрана 2024-06-03 в 21.20.04.png>)
+![alt text](<images/Снимок экрана 2024-06-03 в 21.21.41.png>)
 
-![alt text](<Снимок экрана 2024-06-03 в 21.20.04.png>)
-
-![alt text](<Снимок экрана 2024-06-03 в 21.21.41.png>)
 
 This Python code uses the Flask microframework to create a simple web application that can predict the price of a property based on four features:
 

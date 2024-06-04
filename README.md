@@ -382,4 +382,4 @@ sudo ufw allow 7778
 
 Example of work: 
 
-![alt text](<Снимок экрана 2024-06-04 в 07.50.24.png>)
+![alt text](<images/Снимок экрана 2024-06-04 в 08.23.21.png>)
